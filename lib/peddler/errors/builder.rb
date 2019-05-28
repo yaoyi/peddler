@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'excon'
+require 'http'
 require 'forwardable'
 require 'peddler/errors/class_generator'
 require 'peddler/errors/parser'

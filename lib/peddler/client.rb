@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require 'http'
 require 'forwardable'
-require 'jeff'
+require 'peddler/jeff'
 require 'peddler/errors/builder'
 require 'peddler/marketplace'
 require 'peddler/operation'
@@ -90,7 +91,7 @@ module Peddler
 
     # @api private
     def defaults
-      @defaults ||= { expects: 200 }
+      @defaults ||= {}
     end
 
     # @api private
@@ -111,13 +112,13 @@ module Peddler
     # @api private
     def run
       opts = build_options
-      opts.store(:response_block, Proc.new) if block_given?
       res = post(opts)
       self.body = nil if res.status == 200
 
       parser.new(res, encoding)
-    rescue ::Excon::Error::HTTPStatus => e
-      handle_http_status_error(e)
+    rescue ::HTTP::Error => e
+      # puts e.message
+      # handle_http_status_error(e)
     end
 
     private

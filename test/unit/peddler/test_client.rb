@@ -5,7 +5,6 @@ require 'null_client'
 
 class TestPeddlerClient < MiniTest::Test
   def setup
-    Excon.defaults[:mock] = true
     @klass = Class.new(Null::Client)
     @client = @klass.new
     @client.configure_with_mock_data!
@@ -13,19 +12,18 @@ class TestPeddlerClient < MiniTest::Test
   end
 
   def teardown
-    Excon.stubs.clear
-    Excon.defaults.delete(:mock)
+    WebMock.reset!
   end
 
   class HappyPath < TestPeddlerClient
     def setup
       @response_body = 'foo'
-      Excon.stub({}, body: @response_body, status: 200)
+      stub_request(:any, /.*/).to_return(body: @response_body, status: 200)
       super
     end
 
     def test_user_agent
-      assert @client.connection.data[:headers].key?('User-Agent')
+      assert @client.connection.headers.key?('User-Agent')
     end
 
     def test_inheritance_of_parents_params
@@ -139,7 +137,7 @@ class TestPeddlerClient < MiniTest::Test
     def test_that_request_preserves_user_agent
       @client.defaults.update(instrumentor: Instrumentor)
       @client.run
-      headers = Instrumentor.events['excon.request'][:headers]
+      headers = Instrumentor.events['http.request'][:headers]
 
       assert headers.key?('User-Agent')
     end
@@ -154,7 +152,7 @@ class TestPeddlerClient < MiniTest::Test
           </Error>
         </ErrorResponse>
       XML
-      Excon.stub({}, body: body, status: 503)
+      stub_request(:any, /.*/).to_return(body: body, status: 503)
       super
     end
 
@@ -182,19 +180,19 @@ class TestPeddlerClient < MiniTest::Test
           </Error>
         </ErrorResponse>
       XML
-      Excon.stub({}, body: body, status: 500)
+      stub_request(:any, /.*/).to_return(body: body, status: 500)
       super
     end
 
     def test_error_handling
-      assert_raises Excon::Error::InternalServerError do
+      assert_raises HTTP::Error do
         @client.run
       end
     end
 
     def test_it_does_not_clear_body_when_run_fails
       @client.body = 'foo'
-      assert_raises Excon::Error::InternalServerError do
+      assert_raises HTTP::Error do
         @client.run
       end
       refute_nil @client.body

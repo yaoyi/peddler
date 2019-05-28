@@ -8,6 +8,7 @@ end
 
 require 'minitest/autorun'
 require 'minitest/focus'
+require 'webmock/minitest'
 begin
   require 'pry'
 rescue LoadError

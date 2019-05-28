@@ -20,7 +20,7 @@ class TestPeddlerErrorsBuilder < MiniTest::Test
           </Error>
         </ErrorResponse>
       XML
-      @cause = Excon::Error::NotFound.new(
+      @cause = HTTP::Error.new(
         'Expected(200) <=> Actual(404 Not Found)',
         nil,
         OpenStruct.new(body: body)
@@ -50,7 +50,7 @@ class TestPeddlerErrorsBuilder < MiniTest::Test
           </Error>
         </ErrorResponse>
       XML
-      @cause = Excon::Error::InternalServerError.new(
+      @cause = HTTP::Error.new(
         nil,
         nil,
         OpenStruct.new(body: body)

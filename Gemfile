@@ -10,6 +10,7 @@ gem 'rubocop'
 gem 'simplecov'
 gem 'vcr'
 gem 'yard'
+gem 'webmock'
 
 group :development do
   gem 'pry'
