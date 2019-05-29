@@ -8,6 +8,14 @@ require 'peddler/marketplace'
 require 'peddler/operation'
 require 'peddler/parser'
 
+class CustomError < HTTP::StateError
+  attr_reader :response
+
+  def initialize(response)
+    @response = response
+  end
+end
+
 module Peddler
   # An abstract client
   #
@@ -114,11 +122,10 @@ module Peddler
       opts = build_options
       res = post(opts)
       self.body = nil if res.status == 200
-
+      raise CustomError.new(res) if res.status != 200
       parser.new(res, encoding)
-    rescue ::HTTP::Error => e
-      # puts e.message
-      # handle_http_status_error(e)
+    rescue CustomError => e
+      handle_http_status_error(e)
     end
 
     private
