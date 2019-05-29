@@ -132,6 +132,8 @@ module Jeff
     add_md5_digest options
     sign options
     move_query_to_body options
+    query = options.delete(:query)
+    options.store(:params, Rack::Utils.parse_nested_query(query))
     connection.request(:post, aws_endpoint, options.except(:method))
   end
 
