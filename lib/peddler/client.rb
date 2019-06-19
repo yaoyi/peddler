@@ -123,6 +123,7 @@ module Peddler
       res = post(opts)
       self.body = nil if res.status == 200
       raise CustomError.new(res) if res.status != 200
+      return yield(res) if block_given?
       parser.new(res, encoding)
     rescue CustomError => e
       handle_http_status_error(e)
