@@ -134,7 +134,7 @@ module Jeff
     move_query_to_body options
     query = options.delete(:query)
     options.store(:params, Rack::Utils.parse_nested_query(query))
-    connection.timeout(60).request(:post, aws_endpoint, options.except(:method))
+    connection.timeout(300).request(:post, aws_endpoint, options.except(:method))
   end
 
   private
