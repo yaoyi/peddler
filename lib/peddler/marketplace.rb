@@ -63,11 +63,15 @@ module Peddler
       ['A33AVAJ2PDY3EV', 'TR', 'mws-eu.amazonservices.com'],
       ['A1805IZSGTT6HS', 'NL', 'mws-eu.amazonservices.com'],
       ['A2NODRKZP88ZB9', 'SE', 'mws-eu.amazonservices.com'],
+      ['A1C3SOZRARQ6R3', 'PL', 'mws-eu.amazonservices.com'],
+      ['A17E79C6D8DWNP', 'SA', 'mws-eu.amazonservices.com'],
+      ['A33AVAJ2PDY3EV', 'TR', 'mws-eu.amazonservices.com'],
       ['A21TJRUUN4KGV', 'IN', 'mws.amazonservices.in'],
       ['A39IBJ37TRP1C6', 'AU', 'mws.amazonservices.com.au'],
       ['A1VC38T7YXB528', 'JP', 'mws.amazonservices.jp'],
       ['AAHKV2X7AFYLW', 'CN', 'mws.amazonservices.com.cn'],
-      ['A2VIGQ35RCS4UG', 'AE', 'mws.amazonservices.ae']
+      ['A2VIGQ35RCS4UG', 'AE', 'mws.amazonservices.ae'],
+      ['A19VAU5U5O7RUS', 'SG', 'mws-fe.amazonservices.com']
     ].map do |values|
       new(*values)
     end
